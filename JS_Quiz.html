@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>JavaScript Quiz</title>
+<style>
+
+  body{
+    margin-left:auto;
+    margin-right:auto;
+    width:600px;
+    margin-top:100px;
+    font-family:Arial,Helvetica,sans-serif;
+    font-size:20px;
+    line-height:24px;
+    color:#2b2b2b;
+    background:#8b8b8b;
+   }
+
+   h2{
+    font-size:30px;
+    line-height:34px;
+   }
+
+   button{
+    width:160px;
+    height:40px;
+    font-size:14px;
+    line-height:16px;
+    margin-top:20px;
+    border-radius: 5px;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+  }
+
+  button:active,
+  button:hover{
+    background:#dddddd;
+  }
+
+  div#main{
+    border:1px solid #000000;
+    padding:0 40px 0 40px;
+    height:340px;
+    background:#eeeeee;
+  }
+
+  input{
+    margin-bottom:5px;
+  }
+
+  span#q1,
+  span#q2,
+  span#q3{
+    padding-right:200px;
+  }
+
+  p#message{
+    font-weight:bold;
+    font-size:26px;
+    line-height:32px;
+  }
+
+</style>
+<script>
+
+var pos = 0, test, test_status, question, choice, choices, chA, chB, chC, correct = 0;
+var questions  = [
+  ["What is 10 + 4?","12","14","16","B"],
+  ["'X' is which letter in the alphabet?","22nd","43rd","24th","C"],
+  ["What is 20 - 8?","7","13","12","C"],
+  ["How do you spell 'towel'?","twoel","towel","towl","B"],
+  ["What is 7 x 3?","21","24","25","A"],
+  ["What is 8 / 2?","10","2","4","C"],
+  ["How many prime ministers have served two or more terms in the US?","Three","None","What's a prime minister?","B"],
+  ["What would a Bostonian colloquially call a liquor store?","Packie","Off-license","LC","A"]
+];
+
+
+
+function _(x){
+  return document.getElementById(x);
+}
+
+
+
+function renderQuestion(){
+  test = _("test");
+
+
+  // 'TEST COMPLETED' CONDITIONAL
+  if(pos >= questions.length){
+      _("test_status").innerHTML = "Quiz completed";
+
+
+
+
+      function judge(){
+        var total = questions.length;
+        var percent = (correct / total) * 100;
+        var grade  = Math.round(percent);
+
+
+        if(grade > 50){
+          _("message").innerHTML = "You passed! Momma will be so proud.";
+          _("message").style.color = "green";
+        }
+        else{
+          _("message").innerHTML = "You did not pass.";
+          _("message").style.color = "orange";
+        }
+      
+        test.innerHTML = "<h2>You scored "+grade+"%</h2>";
+      };
+
+      judge();
+
+
+
+      pos = 0;
+      correct = 0;
+      return false;
+  }
+  // ============================
+
+
+      _("test_status").innerHTML = "Question "+(pos+1)+" of "+questions.length;
+      question = questions[pos][0];
+      chA = questions[pos][1];
+      chB = questions[pos][2];
+      chC = questions[pos][3];
+
+
+      _("q1").innerHTML = chA;
+      _("q2").innerHTML = chB;
+      _("q3").innerHTML = chC;
+      _("ax").innerHTML = question;
+
+
+    _("radio1").checked = false;
+    _("radio2").checked = false;
+    _("radio3").checked = false;
+
+
+}
+
+
+
+function checkAnswer(){
+
+          choices = document.getElementsByName("choices");
+
+
+          for(var i=0;i<choices.length;i++){
+            if(choices[i].checked){
+                choice = choices[i].value;
+              }
+          }
+
+          if(choice == questions[pos][4]){
+              correct++;
+          }
+
+          pos++;
+          renderQuestion();
+}
+
+
+
+window.addEventListener("load", renderQuestion, false); 
+</script>
+</head>  
+<body>
+
+<div id="main">
+
+      <h2 id="test_status"></h2>
+      <div id="test">
+        <h3 id="ax"></h3>
+        <label><input type='radio' id="radio1" name='choices' value='A'> <span id="q1"></span></label><br />
+        <label><input type='radio' id="radio2" name='choices' value='B'> <span id="q2"></span></label><br />
+        <label><input type='radio' id="radio3" name='choices' value='C'> <span id="q3"></span></label><br /><br />
+        <button id="submit" onclick="checkAnswer()">Submit Answer</button>
+      </div>
+
+      <p id="message"></p>
+
+</div>
+
+</body>
+</html>
