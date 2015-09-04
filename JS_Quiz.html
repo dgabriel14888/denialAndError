@@ -22,15 +22,25 @@
     line-height:34px;
    }
 
-   button{
-    width:160px;
-    height:40px;
-    font-size:14px;
-    line-height:16px;
-    margin-top:20px;
-    border-radius: 5px;
-    -webkit-border-radius: 5px;
-    -moz-border-radius: 5px;
+   a:link,
+   a:visited{
+    color:green;
+    font-weight:bold;
+    text-decoration:none;
+   }
+
+   a:hover{
+    text-decoration:underline;
+  }
+
+  button{
+  width:160px;
+  height:40px;
+  font-size:14px;
+  line-height:16px;
+  margin-top:20px;
+  border-radius: 5px;
+  -webkit-border-radius: 5px;
   }
 
   button:active,
@@ -61,10 +71,18 @@
     line-height:32px;
   }
 
+  p#reset{
+    display:none;
+    margin-top:80px;
+  }
+
+
 </style>
 <script>
 
-var pos = 0, test, test_status, question, choice, choices, chA, chB, chC, correct = 0;
+var pos = 0;
+var correct = 0;
+var choices = document.getElementsByName("choices");
 var questions  = [
   ["What is 10 + 4?","12","14","16","B"],
   ["'X' is which letter in the alphabet?","22nd","43rd","24th","C"],
@@ -72,8 +90,8 @@ var questions  = [
   ["How do you spell 'towel'?","twoel","towel","towl","B"],
   ["What is 7 x 3?","21","24","25","A"],
   ["What is 8 / 2?","10","2","4","C"],
-  ["How many prime ministers have served two or more terms in the US?","Three","None","What's a prime minister?","B"],
-  ["What would a Bostonian colloquially call a liquor store?","Packie","Off-license","LC","A"]
+  ["How many prime ministers served in the US?","Three","None","What's a prime minister?","B"],
+  ["What would a Bostonian call a liquor store?","Packie","Off-license","LC","A"]
 ];
 
 
@@ -85,62 +103,70 @@ function _(x){
 
 
 function renderQuestion(){
-  test = _("test");
 
 
   // 'TEST COMPLETED' CONDITIONAL
   if(pos >= questions.length){
-      _("test_status").innerHTML = "Quiz completed";
+      _("test_status").innerHTML = "Quiz completed.";
 
 
 
-
-      function judge(){
-        var total = questions.length;
-        var percent = (correct / total) * 100;
-        var grade  = Math.round(percent);
-
-
-        if(grade > 50){
-          _("message").innerHTML = "You passed! Momma will be so proud.";
-          _("message").style.color = "green";
-        }
-        else{
-          _("message").innerHTML = "You did not pass.";
-          _("message").style.color = "orange";
-        }
-      
-        test.innerHTML = "<h2>You scored "+grade+"%</h2>";
-      };
-
-      judge();
+    function judge(){
+      var total = questions.length;
+      var percent = (correct / total) * 100;
+      var grade  = Math.round(percent);
 
 
+      if(grade > 50){
+        _("message").innerHTML = "You passed! Momma will be so proud.";
+        _("message").style.color = "green";
+      }
+      else{
+        _("message").innerHTML = "You did not pass.";
+        _("message").style.color = "orange";
+      }
+    
+      _("test").innerHTML = "<h2>You scored "+grade+"%</h2>";
+    };
 
-      pos = 0;
-      correct = 0;
-      return false;
+    judge();
+    _("reset").style.display = "block";
+
+    return false;
+
   }
   // ============================
 
 
-      _("test_status").innerHTML = "Question "+(pos+1)+" of "+questions.length;
-      question = questions[pos][0];
-      chA = questions[pos][1];
-      chB = questions[pos][2];
-      chC = questions[pos][3];
+
+  _("submit").setAttribute("disabled", true);
 
 
-      _("q1").innerHTML = chA;
-      _("q2").innerHTML = chB;
-      _("q3").innerHTML = chC;
-      _("ax").innerHTML = question;
+  var question, chA, chB, chC;
+
+  _("test_status").innerHTML = "Question "+(pos+1)+" of 8";
+  question = questions[pos][0];
+  chA = questions[pos][1];
+  chB = questions[pos][2];
+  chC = questions[pos][3];
 
 
-    _("radio1").checked = false;
-    _("radio2").checked = false;
-    _("radio3").checked = false;
 
+  _("q1").innerHTML = chA;
+  _("q2").innerHTML = chB;
+  _("q3").innerHTML = chC;
+  _("ax").innerHTML = question;
+
+
+
+  // Unchecks boxes and removes the
+  // "disabled" attribute from the submit
+  for(var i=0;i<choices.length;i++){
+    choices[i].checked = false;
+    choices[i].addEventListener("click", function(){
+      _("submit").removeAttribute("disabled");
+    });
+  }
 
 }
 
@@ -148,21 +174,20 @@ function renderQuestion(){
 
 function checkAnswer(){
 
-          choices = document.getElementsByName("choices");
+  var choice;
 
+    for(var i=0;i<choices.length;i++){
+      if(choices[i].checked){
+          choice = choices[i].value;
+        }
+    }
 
-          for(var i=0;i<choices.length;i++){
-            if(choices[i].checked){
-                choice = choices[i].value;
-              }
-          }
+    if(choice == questions[pos][4]){
+        correct++;
+    }
 
-          if(choice == questions[pos][4]){
-              correct++;
-          }
-
-          pos++;
-          renderQuestion();
+    pos++;
+    renderQuestion();
 }
 
 
@@ -177,13 +202,14 @@ window.addEventListener("load", renderQuestion, false);
       <h2 id="test_status"></h2>
       <div id="test">
         <h3 id="ax"></h3>
-        <label><input type='radio' id="radio1" name='choices' value='A'> <span id="q1"></span></label><br />
-        <label><input type='radio' id="radio2" name='choices' value='B'> <span id="q2"></span></label><br />
-        <label><input type='radio' id="radio3" name='choices' value='C'> <span id="q3"></span></label><br /><br />
+        <label><input type="radio" name="choices" value="A"> <span id="q1"></span></label><br />
+        <label><input type="radio" name="choices" value="B"> <span id="q2"></span></label><br />
+        <label><input type="radio" name="choices" value="C"> <span id="q3"></span></label><br /><br />
         <button id="submit" onclick="checkAnswer()">Submit Answer</button>
       </div>
 
       <p id="message"></p>
+      <p id="reset"><a href="JS_Quiz.html">&raquo; Start over</a></p>
 
 </div>
 
