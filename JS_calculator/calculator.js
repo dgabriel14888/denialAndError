@@ -1,5 +1,4 @@
 var allKeys = document.querySelectorAll('input[type=button]');
-var allOperators = document.getElementsByClassName('operator');
 var screen = document.getElementById('screen');
 
 
