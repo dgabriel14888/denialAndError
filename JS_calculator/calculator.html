@@ -7,15 +7,15 @@
 
 body{
 	margin-top: 100px;
-	font-family: "Courier New", Courier, monospace;
 	background: #222;
+	font-family: "Courier New", Courier, monospace;
 }
 
 .calculator {
+	width: 330px;
 	margin-left: auto;
 	margin-right: auto;
 	padding: 10px 0;
-	width: 330px;
 	background: #aaa;
 	font-size: 12px;
 }
@@ -31,12 +31,12 @@ body{
 }
 
 input{
-	background: #558800;
-	color: #ffffff;
 	width: 70px;
 	height: 40px;
-	font-family: "Courier New", Courier, monospace;
+	background: #558800;
+	color: #ffffff;
 	letter-spacing: 2px;
+	font-family: "Courier New", Courier, monospace;
 }
 
 input:focus {
@@ -45,8 +45,8 @@ input:focus {
 
 #screen {
 	width: 285px;
-	text-align: right;
 	padding-right: 10px;
+	text-align: right;
 }
 
 </style>
@@ -77,7 +77,7 @@ input:focus {
 		<input type="button" class="operator" value="*">
 	</div>
 	<div class="buttons-row">
-		<input type="button" class="clear" value="C">
+		<input type="button" value="C">
 		<input type="button" value="0">
 		<input type="button" value="=">
 		<input type="button" class="operator" value="/">

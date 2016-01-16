@@ -35,9 +35,9 @@ for (var i = 0; i < allKeys.length; i++) {
 			evaluate();
 		}
 
+		// Integer or operator
 		else {
 
-			// This condition makes sure you can have only one operator in a row
 			var screenValue = screen.value;
 			var lastKey = screenValue.substr(screenValue.length - 1);
 
@@ -51,6 +51,5 @@ for (var i = 0; i < allKeys.length; i++) {
 			screen.value += keyVal;
 
 		}
-
 	});
 }
