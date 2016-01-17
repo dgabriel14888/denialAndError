@@ -46,7 +46,7 @@ for (var i = 0; i < allKeys.length; i++) {
 				screen.value = screenValue.substr(0, screenValue.length - 1);
 			}
 
-			// Integers only
+			// Adds integer or operator to the screen
 			screen.value += keyVal;
 
 		}
